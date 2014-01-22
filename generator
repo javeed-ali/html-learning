@@ -1,0 +1,41 @@
+class Z_HTMLgen
+
+def locator(file)
+
+File.open(file) do |f|
+f.each do |line|
+if line.include?"Title"
+@t=line
+elsif line.include?"Organization"
+@n=line
+elsif line.include?"Content"
+@c=line+f.read
+end
+end
+end
+t=@t;n=@n;c=@c
+generator(file,t,n,c)
+end
+
+def generator(file,t,n,c)
+ h_file=file.gsub(/.txt/,'.html')
+f=File.open("layout.rb")
+lout=f.read
+f=File.open(h_file,'w')
+f.write(lout)
+f.close
+
+File.write(h_file, File.read(h_file).gsub(/{{Title}}/,t))
+File.write(h_file, File.read(h_file).gsub(/{{OrganizationName}}/,n))
+File.write(h_file, File.read(h_file).gsub(/{{Content}}/,c))
+end
+
+end
+obj=Z_HTMLgen.new()
+
+Dir.chdir("/home/jvd/projects/note") do
+Dir.glob("*.txt").each do |item|
+obj.locator(item)
+puts "your HTML file is generated......check your folder"
+end
+end
