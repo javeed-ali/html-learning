@@ -1,0 +1,140 @@
+name,val=ARGV
+class Note
+
+def show()
+
+	f=File.open('student.txt','r')
+	puts f.read
+	f.close
+  end
+
+def search(val)
+	File.open( 'student.txt' ) do |io|
+	io.each do |line,line_number| 
+	line.chomp! 
+	if line.include? val
+	puts line
+	#puts "#{line_number} #{count}"
+	
+    end
+    end
+    end
+end
+
+def delete(val)
+	data=[]
+
+	f=File.open('student.txt','r')
+	text=f.read
+	k1=1
+	text.each_line do |line|
+ 	k,v = line.split("-")
+	if line.include? val
+  	else
+	data[k1]=v
+	k1=k1+1
+	end 
+  	end
+
+	f.close
+	f=File.open('student.txt','w')
+	c=1
+	for i in (1..data.size-1)
+
+	f.write(c)
+	f.write("-")
+	f.write(data[i])
+	c=c+1
+	end 
+	f.close
+end	
+
+def add(details,a)
+	c=0
+	f=File.open('student.txt','r')
+	text=f.read()
+	text.each_line do |line|
+	c=c+1
+	end
+	f.close
+
+	f=File.open('student.txt','a')
+	if c==0
+	x=1
+	f.write(x)
+
+else
+	f.write(c+1)
+end
+	f.write("-")
+	f.write(" ")
+	f.write(details)
+	f.write ("\n")
+	f.close
+          
+end
+
+def modify(key)
+
+	data=[]
+
+	f=File.open('student.txt','r')
+	text=f.read
+	k1=1
+	text.each_line do |line|
+ 	k,v = line.split("-")
+	if line.include? key
+  	else
+	data[k1]=v
+
+end
+end
+
+	puts "enter modification"
+	n_v=STDIN.gets.chomp
+	data[key.to_i]=n_v
+
+	f=File.open('student.txt','w')
+	data.each do |k,v|
+	f.write(k)
+	f.write(" ")
+	f.write(v)
+	f.write("\n")
+end
+end
+end
+
+
+
+obj=Note.new()
+a=name
+
+case a
+	when 'l'
+	
+		obj.show()
+	when 's'
+		puts "searching complete  "
+		obj.search(val)
+	when 'd'
+		puts "deletion complete"
+		obj.delete(val)
+	when 'm'  
+		puts "modification completed"
+		obj.modify(val)
+	
+	else
+		puts "enter name "
+		name=gets.chomp()
+                    puts "enter email id "
+		email=gets.chomp()
+		puts "enter phone number "
+		phone=gets.chomp()
+		puts "enter address "
+		address=gets.chomp()
+		
+		info=name+" "+email+" "+phone+" "+address
+	        puts "element is added"
+		obj.add(info,a)
+	
+end
